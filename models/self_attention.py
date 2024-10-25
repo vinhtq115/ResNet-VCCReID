@@ -56,5 +56,5 @@ class SelfAttention(nn.Module):
 
         # sum the hidden states
         # representations = weighted.sum(1).squeeze()
-        representations = weighted.sum(1).squeeze()
+        representations = weighted.sum(1)
         return representations, scores
