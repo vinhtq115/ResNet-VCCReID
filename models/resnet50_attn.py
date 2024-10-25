@@ -17,6 +17,9 @@ class ResNetAttn(OldResNet):
         super().__init__(block, layers)
         self.load_state_dict(weights.get_state_dict(check_hash=True))
 
+        self.layer4[0].conv2.stride = (1, 1)
+        self.layer4[0].downsample[0].stride = (1, 1)
+
         del self.fc
         del self.avgpool
 

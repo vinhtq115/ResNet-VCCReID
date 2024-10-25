@@ -34,8 +34,8 @@ def test(model, queryloader, galleryloader, query, gallery):
     query_features, gallery_features = query_features.cuda(), gallery_features.cuda()
     # Cosine similarity
     for i in range(m):
-        distance_matrix[i] = (-torch.mm(query_features[i:i + 1], gallery_features.t())).cpu()
-        # distance_matrix[i] = (-torch.mm(query_features[i:i + 1], gallery_features.t()) / (torch.norm(query_features[i])*torch.norm(gallery_features, dim=1))).cpu()
+        # distance_matrix[i] = (-torch.mm(query_features[i:i + 1], gallery_features.t())).cpu()
+        distance_matrix[i] = (-torch.mm(query_features[i:i + 1], gallery_features.t()) / (torch.norm(query_features[i])*torch.norm(gallery_features, dim=1))).cpu()
     distance_matrix = distance_matrix.numpy()
     query_pids, query_camids, query_clothes_ids = query_pids.numpy(),\
           query_camids.numpy(), query_clothes_ids.numpy()
@@ -90,8 +90,8 @@ def test(model, queryloader, galleryloader, query, gallery):
 # else:
 #     state_dict_path = "work_space/save/vccr_60_0.0003_16_resnet50_standard.pth" # replace path here if using pretrained SEMI
 #     model_name = state_dict_path.split('/')[-1]
-state_dict_path = f"work_space/ckpts/{CONFIG.TEST.TEST_SET}/resnet50_attn_bn_cal/best_cc_map.pth"
-model_name = "resnet50_attn_bn_cal_best_map"
+state_dict_path = f"work_space/ckpts/{CONFIG.TEST.TEST_SET}/resnet50_attn_stride_1_bn_cal/best_cc_map.pth"
+model_name = "resnet50_attn_stride_1_bn_cal_best_cc_map"
 
 print(f"Testing Model: {model_name} on {CONFIG.TEST.TEST_SET} with mode: {CONFIG.TEST.TEST_MODE}")
 # state_dict_path = osp.join(CONFIG.METADATA.SAVE_PATH, model_name)
@@ -105,11 +105,11 @@ if CONFIG.DATA.DATASET in ['vccr', 'ccvid']:
         test(model, queryloader, galleryloader, query, gallery)
     print("==============================")
 
-    sc_results = f"Same Clothes | R-1: {sc_cmc[0]:.1f} | R-5: {sc_cmc[4]:.1f} | R-10: {sc_cmc[9]:.1f} | mAP: {sc_mAP:.1f}"
+    sc_results = f"SC | R-1: {sc_cmc[0]:.1f} | R-5: {sc_cmc[4]:.1f} | R-10: {sc_cmc[9]:.1f} | R-20: {sc_cmc[19]:.1f} | mAP: {sc_mAP:.1f}"
     print(sc_results)
-    standard_results = f"Standard | R-1: {standard_cmc[0]:.1f} | R-5: {standard_cmc[4]:.1f} | R-10: {standard_cmc[9]:.1f} | mAP: {standard_mAP:.1f}"
+    standard_results = f"Both | R-1: {standard_cmc[0]:.1f} | R-5: {standard_cmc[4]:.1f} | R-10: {standard_cmc[9]:.1f} | R-20: {standard_cmc[19]:.1f} | mAP: {standard_mAP:.1f}"
     print(standard_results)
-    cc_results = f"Cloth-changing | R-1: {cc_cmc[0]:.1f} | R-5: {cc_cmc[4]:.1f} | R-10: {cc_cmc[9]:.1f} | mAP: {cc_mAP:.1f}"
+    cc_results = f"CC | R-1: {cc_cmc[0]:.1f} | R-5: {cc_cmc[4]:.1f} | R-10: {cc_cmc[9]:.1f} | R-20: {cc_cmc[19]:.1f} | mAP: {cc_mAP:.1f}"
     print(cc_results)
 
     # Calculate the rank values for the x-axis
@@ -126,7 +126,7 @@ if CONFIG.DATA.DATASET in ['vccr', 'ccvid']:
     plt.title(f'{model_name}_{CONFIG.TEST.TEST_SET}_{CONFIG.TEST.TEST_MODE}')
     plt.grid(False)
     # Save the plot to an output folder
-    path = f"work_space/output/{model_name}_{CONFIG.TEST.TEST_SET}_{CONFIG.TEST.TEST_MODE}.png"
+    path = f"work_space/output2/{model_name}_{CONFIG.TEST.TEST_SET}_{CONFIG.TEST.TEST_MODE}.png"
     plt.legend()
     plt.savefig(path)
 else:

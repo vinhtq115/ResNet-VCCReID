@@ -21,7 +21,7 @@ from utils.utils import AverageMeter
 
 
 config = CONFIG()
-SAVE_DIR = f"work_space/ckpts/{config.DATA.DATASET}/resnet50_attn_bn_end"
+SAVE_DIR = f"work_space/ckpts/{config.DATA.DATASET}/resnet50_attn_stride_1_bn_cal"
 os.makedirs(SAVE_DIR, exist_ok=True)
 logger = logging.getLogger()
 fh = logging.FileHandler(os.path.join(SAVE_DIR, 'train.log'))
