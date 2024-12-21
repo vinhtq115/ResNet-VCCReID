@@ -84,17 +84,10 @@ def test(model, queryloader, galleryloader, query, gallery):
 """
     Testing
 """
-# if CONFIG.TEST.TEST_SET == CONFIG.DATA.DATASET:
-#     model_name = build_model_name()
-#     state_dict_path = osp.join(CONFIG.METADATA.SAVE_PATH, model_name) # replace path here if using pretrained SEMI
-# else:
-#     state_dict_path = "work_space/save/vccr_60_0.0003_16_resnet50_standard.pth" # replace path here if using pretrained SEMI
-#     model_name = state_dict_path.split('/')[-1]
-state_dict_path = f"work_space/ckpts/{CONFIG.TEST.TEST_SET}/resnet50_attn_stride_1_bn_cal/best_cc_map.pth"
-model_name = "resnet50_attn_stride_1_bn_cal_best_cc_map"
+state_dict_path = f"work_space/ckpts/{CONFIG.TEST.TEST_SET}/resnet50_attn_stride_1_bn_cal/best_cc_r1.pth"
+model_name = "resnet50_attn_stride_1_bn_cal_best_cc_r1"
 
 print(f"Testing Model: {model_name} on {CONFIG.TEST.TEST_SET} with mode: {CONFIG.TEST.TEST_MODE}")
-# state_dict_path = osp.join(CONFIG.METADATA.SAVE_PATH, model_name)
 
 model = build_models(CONFIG, train=False)
 model.load_state_dict(torch.load(state_dict_path)["model"], strict=False)
@@ -126,7 +119,7 @@ if CONFIG.DATA.DATASET in ['vccr', 'ccvid']:
     plt.title(f'{model_name}_{CONFIG.TEST.TEST_SET}_{CONFIG.TEST.TEST_MODE}')
     plt.grid(False)
     # Save the plot to an output folder
-    path = f"work_space/output2/{model_name}_{CONFIG.TEST.TEST_SET}_{CONFIG.TEST.TEST_MODE}.png"
+    path = f"work_space/output/{model_name}_{CONFIG.TEST.TEST_SET}_{CONFIG.TEST.TEST_MODE}.png"
     plt.legend()
     plt.savefig(path)
 else:
